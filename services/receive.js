@@ -103,12 +103,12 @@ module.exports = class Receive {
         Response.genText(i18n.__("get_started.guidance")),
         Response.genQuickReply(i18n.__("get_started.help"), [
           {
-            title: i18n.__("menu.suggestion"),
-            payload: "CURATION"
+            title: i18n.__("menu.course_by_kw"),
+            payload: "COURSE_BY_KEYWORD"
           },
           {
-            title: i18n.__("menu.help"),
-            payload: "CARE_HELP"
+            title: i18n.__("menu.category"),
+            payload: "CATEGORY"
           }
         ])
       ];
@@ -221,6 +221,7 @@ module.exports = class Receive {
   }
 
   handlePrivateReply(type, object_id) {
+    console.log("handlePrivateReply: ", type);
     let welcomeMessage =
       i18n.__("get_started.welcome") +
       " " +

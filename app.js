@@ -236,14 +236,14 @@ var listener = app.listen(config.port, function() {
     config.appUrl &&
     config.verifyToken
   ) {
-    console.log(
-      "Is this the first time running?\n" +
-        "Make sure to set the both the Messenger profile, persona " +
-        "and webhook by visiting:\n" +
-        config.appUrl +
-        "/profile?mode=all&verify_token=" +
-        config.verifyToken
-    );
+    // console.log(
+    //     //   "Is this the first time running?\n" +
+    //     //     "Make sure to set the both the Messenger profile, persona " +
+    //     //     "and webhook by visiting:\n" +
+    //     //     config.appUrl +
+    //     //     "/profile?mode=all&verify_token=" +
+    //     //     config.verifyToken
+    //     // );
   }
 
   if (config.pageId) {
