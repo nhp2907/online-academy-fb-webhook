@@ -230,12 +230,12 @@ module.exports = class Receive {
 
     let response = Response.genQuickReply(welcomeMessage, [
       {
-        title: i18n.__("menu.suggestion"),
-        payload: "CURATION"
+        title: i18n.__("menu.course_by_kw"),
+        payload: "COURSE_BY_KEYWORD"
       },
       {
-        title: i18n.__("menu.help"),
-        payload: "CARE_HELP"
+        title: i18n.__("menu.category"),
+        payload: "CATEGORY"
       }
     ]);
 
