@@ -22,16 +22,15 @@ module.exports = class Course {
       case courseAction.categories: {
         const categories = await getCategory()
         console.log('categories: ', categories);
-        const listResponse = categories.map((cate) =>
-          Response.genPostbackButton(
-            cate.name,
+        const listQuickReplies = categories.map((cate) =>
             `COURSE_BY_CATEGORY_ID_${cate.id}`
-          )
         )
+        console.log('list response', listQuickReplies);
         response = [
           Response.genText(i18n.__('leadgen.coupon')),
-          ...listResponse
+          Response.genQuickReply("Categories", listQuickReplies)
         ]
+        console.log('category response:', response);
         break
       }
       // Response.genGenericTemplate(
