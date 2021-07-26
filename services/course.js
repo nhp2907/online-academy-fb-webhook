@@ -19,6 +19,7 @@ module.exports = class Course {
         response = [Response.genText('You can search by name or category name')]
         break
 
+      // category
       case courseAction.categories: {
         const categories = await getCategory()
         console.log('categories: ', categories)
@@ -28,8 +29,7 @@ module.exports = class Course {
         }))
         console.log('list response', listQuickReplies)
         response = [
-          Response.genText(i18n.__('leadgen.coupon')),
-          Response.genQuickReply('Categories', listQuickReplies)
+          Response.genQuickReply('We found list categories:', listQuickReplies)
         ]
         console.log('category response:', response)
         break
@@ -176,7 +176,10 @@ module.exports = class Course {
           const courses = await getCourseByCategoryId(categoryId)
           courses.map((c) => {
             return Response.genGenericTemplate(c.image, c.name, 'subtitle', [
-              Response.genPostbackButton('post back button', 'COURSE abc')
+              Response.genWebUrlButton(
+                'View detail',
+                `https://online-academy-v1.herokuapp.com/course/${c.id}`
+              )
             ])
           })
           response = [Response.genText('Courses')]
