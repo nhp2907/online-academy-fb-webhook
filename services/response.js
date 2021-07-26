@@ -11,6 +11,7 @@
 'use strict'
 
 const i18n = require('../i18n.config')
+const courseAction = require('./course-payload')
 
 module.exports = class Response {
   static genQuickReply(text, quickReplies) {
@@ -136,15 +137,11 @@ module.exports = class Response {
     let curation = this.genQuickReply(i18n.__('get_started.help'), [
       {
         title: i18n.__('menu.course_by_kw'),
-        payload: 'COURSE_BY_KEYWORD'
+        payload: courseAction.searchByKw
       },
       {
         title: i18n.__('menu.category'),
-        payload: 'CATEGORY'
-      },
-      {
-        title: i18n.__('menu.category'),
-        payload: 'CATEGORY'
+        payload: courseAction.categories
       }
     ])
 

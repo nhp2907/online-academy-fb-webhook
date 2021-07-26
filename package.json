@@ -5,15 +5,18 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "dev": "nodemon app.js",
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "dotenv": "^8.1.0",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
     "i18n": "^0.8.3",
     "node-fetch": "^2.6.1",
+    "nodemon": "^2.0.12",
     "path": "^0.12.7"
   },
   "engines": {

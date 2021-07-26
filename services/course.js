@@ -1,6 +1,9 @@
-const Response = require('response')
+const Response = require('./response')
 const i18n = require('../i18n.config')
 const config = require('./config')
+const axios = require('axios')
+const { getCategory, searchCourse } = require('./api')
+const courseAction = require('./course-payload')
 
 module.exports = class Course {
   constructor(user, webhookEvent) {
@@ -8,54 +11,47 @@ module.exports = class Course {
     this.webhookEvent = webhookEvent
   }
 
-  handlePayload(payload) {
+  async handlePayload(payload) {
     let response
     let outfit
 
     switch (payload) {
-      case 'SEARCH_COURSE_BY_KW':
-        response = [
-          Response.genText(
-            i18n.__('leadgen.promo', {
-              userFirstName: this.user.firstName
-            })
-          ),
-          Response.genGenericTemplate(
-            `${config.appUrl}/coupon.png`,
-            i18n.__('leadgen.title'),
-            i18n.__('leadgen.subtitle'),
-            [Response.genPostbackButton(i18n.__('leadgen.apply'), 'COUPON_50')]
-          )
-        ]
+      case courseAction.searchByKw:
+        response = [Response.genText('You can search by name or category name')]
         break
 
-      case 'CATEGORY':
-        outfit = `${this.user.gender}-${this.randomOutfit()}`
-
+      case courseAction.categories:
+        const categories = await getCategory()
+        const listResponse = categories.map((cate) =>
+          Response.genPostbackButton(
+            cate.name,
+            `COURSE_BY_CATEGORY_ID_${cate.id}`
+          )
+        )
         response = [
           Response.genText(i18n.__('leadgen.coupon')),
-          Response.genGenericTemplate(
-            `${config.appUrl}/styles/${outfit}.jpg`,
-            i18n.__('curation.title'),
-            i18n.__('curation.subtitle'),
-            [
-              Response.genWebUrlButton(
-                i18n.__('curation.shop'),
-                `${config.shopUrl}/products/${outfit}`
-              ),
-              Response.genPostbackButton(
-                i18n.__('curation.show'),
-                'CURATION_OTHER_STYLE'
-              ),
-              Response.genPostbackButton(
-                i18n.__('curation.sales'),
-                'CARE_SALES'
-              )
-            ]
-          )
+          ...listResponse
         ]
         break
-
+      // Response.genGenericTemplate(
+      //     `${config.appUrl}/styles/${outfit}.jpg`,
+      //     i18n.__('curation.title'),
+      //     i18n.__('curation.subtitle'),
+      //     [
+      //         Response.genWebUrlButton(
+      //             i18n.__('curation.shop'),
+      //             `${config.shopUrl}/products/${outfit}`
+      //         ),
+      //         Response.genPostbackButton(
+      //             i18n.__('curation.show'),
+      //             'CURATION_OTHER_STYLE'
+      //         ),
+      //         Response.genPostbackButton(
+      //             i18n.__('curation.sales'),
+      //             'CARE_SALES'
+      //         )
+      //     ]
+      // )
       case 'CURATION':
         response = Response.genQuickReply(i18n.__('curation.prompt'), [
           {

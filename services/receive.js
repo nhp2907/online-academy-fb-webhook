@@ -17,6 +17,8 @@ const Curation = require('./curation'),
   Survey = require('./survey'),
   GraphApi = require('./graph-api'),
   i18n = require('../i18n.config')
+const Course = require('./course')
+const courseAction = require('./course-payload')
 
 module.exports = class Receive {
   constructor(user, webhookEvent) {
@@ -104,11 +106,11 @@ module.exports = class Receive {
         Response.genQuickReply(i18n.__('get_started.help'), [
           {
             title: i18n.__('menu.course_by_kw'),
-            payload: 'COURSE_BY_KEYWORD'
+            payload: courseAction.searchByKw
           },
           {
             title: i18n.__('menu.category'),
-            payload: 'CATEGORY'
+            payload: courseAction.categories
           }
         ])
       ]
@@ -176,19 +178,15 @@ module.exports = class Receive {
     let response
 
     // Set the response based on the payload
-    switch (payload) {
-      case 'GET_STARTED':
-        response = Response.genNuxMessage(this.user)
-        break
-      case 'COURSE_BY_KEYWORD':
-        break
-      case 'CATEGORY':
-        // get categories then send URL button
-        break
-      default:
-        response = {
-          text: `This is a default postback message for payload: ${payload}!`
-        }
+    if (payload.includes('GET_STARTED')) {
+      response = Response.genNuxMessage(this.user)
+    } else if (payload.includes('COURSE')) {
+      const course = new Course(this.user, this.webhookEvent)
+      course.handlePayload(payload)
+    } else {
+      response = {
+        text: `This is a default postback message for payload: ${payload}!`
+      }
     }
 
     // if (
@@ -247,11 +245,11 @@ module.exports = class Receive {
     let response = Response.genQuickReply(welcomeMessage, [
       {
         title: i18n.__('menu.course_by_kw'),
-        payload: 'COURSE_BY_KEYWORD'
+        payload: courseAction.searchByKw
       },
       {
         title: i18n.__('menu.category'),
-        payload: 'CATEGORY'
+        payload: courseAction.categories
       }
     ])
 
