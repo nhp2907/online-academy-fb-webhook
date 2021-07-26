@@ -1,7 +1,6 @@
 const Response = require('./response')
 const i18n = require('../i18n.config')
 const config = require('./config')
-const axios = require('axios')
 const { getCategory, searchCourse } = require('./api')
 const courseAction = require('./course-payload')
 

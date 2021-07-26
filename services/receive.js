@@ -28,7 +28,7 @@ module.exports = class Receive {
 
   // Check if the event is a message or postback and
   // call the appropriate handler function
-  handleMessage() {
+  async handleMessage() {
     let event = this.webhookEvent
 
     let responses
@@ -45,7 +45,7 @@ module.exports = class Receive {
           responses = this.handleTextMessage()
         }
       } else if (event.postback) {
-        responses = this.handlePostback()
+        responses = await this.handlePostback()
       } else if (event.referral) {
         responses = this.handleReferral()
       }
@@ -151,6 +151,7 @@ module.exports = class Receive {
 
   // Handles postbacks events
   handlePostback() {
+    console.log('postback: ', postback);
     let postback = this.webhookEvent.postback
     // Check for the special Get Starded with referral
     let payload
@@ -172,7 +173,7 @@ module.exports = class Receive {
     return this.handlePayload(payload)
   }
 
-  handlePayload(payload) {
+  async handlePayload(payload) {
     console.log('Received Payload:', `${payload} for ${this.user.psid}`)
 
     let response
@@ -182,7 +183,7 @@ module.exports = class Receive {
       response = Response.genNuxMessage(this.user)
     } else if (payload.includes('COURSE')) {
       const course = new Course(this.user, this.webhookEvent)
-      course.handlePayload(payload)
+      response = await course.handlePayload(payload)
     } else {
       response = {
         text: `This is a default postback message for payload: ${payload}!`

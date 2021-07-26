@@ -130,7 +130,7 @@ app.post('/webhook', (req, res) => {
         }
         i18n.setLocale(users[senderPsid].locale)
         let receiveMessage = new Receive(users[senderPsid], webhookEvent)
-        return receiveMessage.handleMessage()
+        return await receiveMessage.handleMessage()
       })
     })
   } else {
