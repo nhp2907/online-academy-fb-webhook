@@ -8,34 +8,34 @@
  * https://developers.facebook.com/docs/messenger-platform/getting-started/sample-apps/original-coast-clothing
  */
 
-"use strict";
+'use strict'
 
-const i18n = require("../i18n.config");
+const i18n = require('../i18n.config')
 
 module.exports = class Response {
   static genQuickReply(text, quickReplies) {
     let response = {
       text: text,
       quick_replies: []
-    };
-
-    for (let quickReply of quickReplies) {
-      response["quick_replies"].push({
-        content_type: "text",
-        title: quickReply["title"],
-        payload: quickReply["payload"]
-      });
     }
 
-    return response;
+    for (let quickReply of quickReplies) {
+      response['quick_replies'].push({
+        content_type: 'text',
+        title: quickReply['title'],
+        payload: quickReply['payload']
+      })
+    }
+
+    return response
   }
 
   static genGenericTemplate(image_url, title, subtitle, buttons) {
     let response = {
       attachment: {
-        type: "template",
+        type: 'template',
         payload: {
-          template_type: "generic",
+          template_type: 'generic',
           elements: [
             {
               title: title,
@@ -46,17 +46,17 @@ module.exports = class Response {
           ]
         }
       }
-    };
+    }
 
-    return response;
+    return response
   }
 
-  static genImageTemplate(image_url, title, subtitle = "") {
+  static genImageTemplate(image_url, title, subtitle = '') {
     let response = {
       attachment: {
-        type: "template",
+        type: 'template',
         payload: {
-          template_type: "generic",
+          template_type: 'generic',
           elements: [
             {
               title: title,
@@ -66,84 +66,88 @@ module.exports = class Response {
           ]
         }
       }
-    };
+    }
 
-    return response;
+    return response
   }
 
   static genButtonTemplate(title, buttons) {
     let response = {
       attachment: {
-        type: "template",
+        type: 'template',
         payload: {
-          template_type: "button",
+          template_type: 'button',
           text: title,
           buttons: buttons
         }
       }
-    };
+    }
 
-    return response;
+    return response
   }
 
   static genText(text) {
     let response = {
       text: text
-    };
+    }
 
-    return response;
+    return response
   }
 
   static genTextWithPersona(text, persona_id) {
     let response = {
       text: text,
       persona_id: persona_id
-    };
+    }
 
-    return response;
+    return response
   }
 
   static genPostbackButton(title, payload) {
     let response = {
-      type: "postback",
+      type: 'postback',
       title: title,
       payload: payload
-    };
+    }
 
-    return response;
+    return response
   }
 
   static genWebUrlButton(title, url) {
     let response = {
-      type: "web_url",
+      type: 'web_url',
       title: title,
       url: url,
       messenger_extensions: true
-    };
+    }
 
-    return response;
+    return response
   }
 
   static genNuxMessage(user) {
     let welcome = this.genText(
-      i18n.__("get_started.welcome", {
+      i18n.__('get_started.welcome', {
         userFirstName: user.firstName
       })
-    );
+    )
 
-    let guide = this.genText(i18n.__("get_started.guidance"));
+    let guide = this.genText(i18n.__('get_started.guidance'))
 
-    let curation = this.genQuickReply(i18n.__("get_started.help"), [
+    let curation = this.genQuickReply(i18n.__('get_started.help'), [
       {
-        title: i18n.__("menu.course_by_kw"),
-        payload: "COURSE_BY_KEYWORD"
+        title: i18n.__('menu.course_by_kw'),
+        payload: 'COURSE_BY_KEYWORD'
       },
       {
-        title: i18n.__("menu.category"),
-        payload: "CATEGORY"
+        title: i18n.__('menu.category'),
+        payload: 'CATEGORY'
+      },
+      {
+        title: i18n.__('menu.category'),
+        payload: 'CATEGORY'
       }
-    ]);
+    ])
 
-    return [welcome, guide, curation];
+    return [welcome, guide, curation]
   }
-};
+}
