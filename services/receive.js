@@ -30,6 +30,7 @@ module.exports = class Receive {
   // call the appropriate handler function
   async handleMessage() {
     let event = this.webhookEvent
+    console.log('event: ', event)
 
     let responses
 
@@ -38,16 +39,18 @@ module.exports = class Receive {
         let message = event.message
 
         if (message.quick_reply) {
-          responses = this.handleQuickReply()
+          responses = await this.handleQuickReply()
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage()
         } else if (message.text) {
           responses = this.handleTextMessage()
         }
       } else if (event.postback) {
+        console.log('waiting postback')
         responses = await this.handlePostback()
+        console.log('response postback', responses)
       } else if (event.referral) {
-        responses = this.handleReferral()
+        responses = await this.handleReferral()
       }
     } catch (error) {
       console.error(error)
@@ -150,7 +153,7 @@ module.exports = class Receive {
   }
 
   // Handles postbacks events
-  handlePostback() {
+  async handlePostback() {
     console.log('postback: ', postback)
     let postback = this.webhookEvent.postback
     // Check for the special Get Starded with referral
@@ -162,7 +165,7 @@ module.exports = class Receive {
       payload = postback.referral.ref
     }
 
-    return this.handlePayload(payload.toUpperCase())
+    return await this.handlePayload(payload.toUpperCase())
   }
 
   // Handles referral events
@@ -265,7 +268,7 @@ module.exports = class Receive {
   }
 
   sendMessage(response, delay = 0) {
-    console.log('step: send message');
+    console.log('step: send message')
     // Check if there is delay in the response
     try {
       if ('delay' in response) {
@@ -294,7 +297,7 @@ module.exports = class Receive {
           persona_id: persona_id
         }
       }
-      console.log('requestBody: ', requestBody);
+      console.log('requestBody: ', requestBody)
       setTimeout(() => GraphApi.callSendApi(requestBody), delay)
     } catch (err) {
       console.log('send message err: ', err)
