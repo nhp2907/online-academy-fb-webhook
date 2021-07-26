@@ -11,16 +11,17 @@ module.exports = class Course {
   }
 
   async handlePayload(payload) {
+    console.log('course handle payload')
     let response
-    let outfit
 
     switch (payload) {
       case courseAction.searchByKw:
         response = [Response.genText('You can search by name or category name')]
         break
 
-      case courseAction.categories:
+      case courseAction.categories: {
         const categories = await getCategory()
+        console.log('categories: ', categories);
         const listResponse = categories.map((cate) =>
           Response.genPostbackButton(
             cate.name,
@@ -32,6 +33,7 @@ module.exports = class Course {
           ...listResponse
         ]
         break
+      }
       // Response.genGenericTemplate(
       //     `${config.appUrl}/styles/${outfit}.jpg`,
       //     i18n.__('curation.title'),
@@ -154,7 +156,7 @@ module.exports = class Course {
 
       case 'CURATION_OTHER_STYLE':
         // Build the recommendation logic here
-        outfit = `${this.user.gender}-${this.randomOutfit()}`
+        let outfit = `${this.user.gender}-${this.randomOutfit()}`
 
         response = Response.genGenericTemplate(
           `${config.appUrl}/styles/${outfit}.jpg`,
@@ -174,6 +176,7 @@ module.exports = class Course {
         break
     }
 
+    console.log('return response: ', response);
     return response
   }
 }

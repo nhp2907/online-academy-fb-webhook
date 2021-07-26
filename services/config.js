@@ -46,7 +46,7 @@ module.exports = {
   personas: {},
 
   // Preferred port (default to 3000)
-  port: process.env.PORT || 3000,
+  port: process.env.PORT || 7000,
 
   // Base URL for Messenger Platform API calls
   get apiUrl() {

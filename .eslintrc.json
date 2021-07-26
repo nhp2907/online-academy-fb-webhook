@@ -14,7 +14,7 @@
     "ecmaVersion": 2018
   },
   "rules": {
-    "prettier/prettier": "warn",
+    "prettier/prettier": "warning",
     "no-console": "off"
   }
 }

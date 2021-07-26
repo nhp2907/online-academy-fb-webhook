@@ -151,7 +151,7 @@ module.exports = class Receive {
 
   // Handles postbacks events
   handlePostback() {
-    console.log('postback: ', postback);
+    console.log('postback: ', postback)
     let postback = this.webhookEvent.postback
     // Check for the special Get Starded with referral
     let payload
@@ -265,35 +265,40 @@ module.exports = class Receive {
   }
 
   sendMessage(response, delay = 0) {
+    console.log('step: send message');
     // Check if there is delay in the response
-    if ('delay' in response) {
-      delay = response['delay']
-      delete response['delay']
-    }
+    try {
+      if ('delay' in response) {
+        delay = response['delay']
+        delete response['delay']
+      }
 
-    // Construct the message body
-    let requestBody = {
-      recipient: {
-        id: this.user.psid
-      },
-      message: response
-    }
-
-    // Check if there is persona id in the response
-    if ('persona_id' in response) {
-      let persona_id = response['persona_id']
-      delete response['persona_id']
-
-      requestBody = {
+      // Construct the message body
+      let requestBody = {
         recipient: {
           id: this.user.psid
         },
-        message: response,
-        persona_id: persona_id
+        message: response
       }
-    }
 
-    setTimeout(() => GraphApi.callSendApi(requestBody), delay)
+      // Check if there is persona id in the response
+      if ('persona_id' in response) {
+        let persona_id = response['persona_id']
+        delete response['persona_id']
+
+        requestBody = {
+          recipient: {
+            id: this.user.psid
+          },
+          message: response,
+          persona_id: persona_id
+        }
+      }
+      console.log('requestBody: ', requestBody);
+      setTimeout(() => GraphApi.callSendApi(requestBody), delay)
+    } catch (err) {
+      console.log('send message err: ', err)
+    }
   }
 
   firstEntity(nlp, name) {
