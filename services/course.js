@@ -174,7 +174,7 @@ module.exports = class Course {
         if (payload.includes('COURSE_BY_CATEGORY_ID')) {
           const categoryId = payload.split('_')[4]
           const courses = await getCourseByCategoryId(categoryId)
-          courses.map((c) => {
+          const listMessage = courses.map((c) => {
             return Response.genGenericTemplate(c.image, c.name, 'subtitle', [
               Response.genWebUrlButton(
                 'View detail',
@@ -182,7 +182,7 @@ module.exports = class Course {
               )
             ])
           })
-          response = [Response.genText('Courses')]
+          response = [listMessage]
         } else {
           response = [Response.genText(`Not found handler for: ${payload}`)]
         }
