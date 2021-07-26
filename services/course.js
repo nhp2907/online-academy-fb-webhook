@@ -21,16 +21,17 @@ module.exports = class Course {
 
       case courseAction.categories: {
         const categories = await getCategory()
-        console.log('categories: ', categories);
-        const listQuickReplies = categories.map((cate) =>
-            `COURSE_BY_CATEGORY_ID_${cate.id}`
-        )
-        console.log('list response', listQuickReplies);
+        console.log('categories: ', categories)
+        const listQuickReplies = categories.map((cate) => ({
+          title: cate.name,
+          payload: `COURSE_BY_CATEGORY_ID_${cate.id}`
+        }))
+        console.log('list response', listQuickReplies)
         response = [
           Response.genText(i18n.__('leadgen.coupon')),
-          Response.genQuickReply("Categories", listQuickReplies)
+          Response.genQuickReply('Categories', listQuickReplies)
         ]
-        console.log('category response:', response);
+        console.log('category response:', response)
         break
       }
       // Response.genGenericTemplate(
@@ -175,7 +176,7 @@ module.exports = class Course {
         break
     }
 
-    console.log('return response: ', response);
+    console.log('return response: ', response)
     return response
   }
 }
