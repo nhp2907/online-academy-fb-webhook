@@ -10,6 +10,11 @@ const getCategory = async () => {
   return data
 }
 
+const getCourseByCategoryId = async (cateId) => {
+  const { data } = await axios.get(`/api/course?categoryId=${cateId}`)
+  return data
+}
+
 const searchCourse = async (kw) => {
   const { data } = await axios.get(`/api/course?kw=${kw}`)
   return data
@@ -17,5 +22,6 @@ const searchCourse = async (kw) => {
 
 module.exports = {
   getCategory,
-  searchCourse
+  searchCourse,
+  getCourseByCategoryId
 }
