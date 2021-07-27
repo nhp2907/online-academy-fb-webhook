@@ -43,7 +43,7 @@ module.exports = class Receive {
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage()
         } else if (message.text) {
-          responses = this.handleTextMessage()
+          responses = await this.handleTextMessage()
         }
       } else if (event.postback) {
         console.log('waiting postback')
@@ -72,7 +72,7 @@ module.exports = class Receive {
   }
 
   // Handles messages events with text
-  handleTextMessage() {
+  async handleTextMessage() {
     console.log(
       'Received text:',
       `${this.webhookEvent.message.text} for ${this.user.psid}`
@@ -93,7 +93,7 @@ module.exports = class Receive {
       response = Response.genNuxMessage(this.user)
     } else {
       const course = new Course(this.user, this.webhookEvent)
-      response = course.handleSearch(message)
+      response = await course.handleSearch(message)
       // if (!response) {
       //   response = [
       //     Response.genText(
