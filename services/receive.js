@@ -56,7 +56,7 @@ module.exports = class Receive {
       console.error(error)
       responses = {
         text: `An error has occured: '${error}'. We have been notified and \
-        will fix the issue shortly!`
+        will fix the issue shortly!.${error.message}`
       }
     }
 

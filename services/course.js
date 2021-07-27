@@ -182,7 +182,7 @@ module.exports = class Course {
               )
             ])
           })
-          response = [listMessage]
+          response = listMessage
         } else {
           response = [Response.genText(`Not found handler for: ${payload}`)]
         }
