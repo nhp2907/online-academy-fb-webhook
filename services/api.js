@@ -16,7 +16,7 @@ const getCourseByCategoryId = async (cateId) => {
 }
 
 const searchCourse = async (kw) => {
-  const { data } = await axios.get(`/api/course?kw=${kw}`)
+  const { data } = await axios.get(`/api/course/search?kw=${kw}`)
   return data
 }
 
