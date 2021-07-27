@@ -15,9 +15,11 @@ module.exports = class Course {
     let response
 
     switch (payload) {
-      case courseAction.searchByKw:
+      case courseAction.searchByKw: {
+        const courses = await searchCourse(payload)
         response = [Response.genText('You can search by name or category name')]
         break
+      }
 
       // category
       case courseAction.categories: {
@@ -175,7 +177,7 @@ module.exports = class Course {
           const categoryId = payload.split('_')[4]
           const courses = await getCourseByCategoryId(categoryId)
           const listMessage = courses.map((c) => {
-            return Response.genGenericTemplate(c.image, c.name, 'subtitle', [
+            return Response.genGenericTemplate(c.image, c.name, c.headline, [
               Response.genWebUrlButton(
                 'View detail',
                 `https://online-academy-v1.herokuapp.com/course/${c.id}`
@@ -190,5 +192,26 @@ module.exports = class Course {
 
     console.log('return response: ', response)
     return response
+  }
+
+  async handleSearch(kw) {
+    const course = await searchCourse(kw)
+    if (course.length === 0) {
+      return [Response.genText("Sorry we don't found any course match your keyword!"),
+        Response.genText("You can search by name or category name.")]
+    }
+    const templates = course.map((c) => {
+      return Response.genGenericTemplate(c.image, c.name, c.headline, [
+        Response.genWebUrlButton(
+          'View detail',
+          `https://online-academy-v1.herokuapp.com/course/${c.id}`
+        )
+      ])
+    })
+
+    return [
+        // Response.genText("We fond"),
+        ...templates
+    ]
   }
 }
