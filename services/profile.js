@@ -16,6 +16,8 @@ const GraphApi = require("./graph-api"),
   config = require("./config"),
   locales = i18n.getLocales();
 
+const courseAction = require('./course-payload')
+
 module.exports = class Profile {
   setWebhook() {
     GraphApi.callSubscriptionsAPI();
@@ -143,19 +145,14 @@ module.exports = class Profile {
       composer_input_disabled: false,
       call_to_actions: [
         {
-          title: i18n.__("menu.order"),
+          title: i18n.__("Categories"),
           type: "postback",
-          payload: "TRACK_ORDER"
+          payload: courseAction.categories
         },
         {
-          title: i18n.__("menu.help"),
+          title: i18n.__("Search course"),
           type: "postback",
-          payload: "CARE_HELP"
-        },
-        {
-          title: i18n.__("menu.suggestion"),
-          type: "postback",
-          payload: "CURATION"
+          payload: courseAction.searchByKw
         },
         {
           type: "web_url",
